@@ -1,4 +1,6 @@
-package com.nrsmac.stormy;
+package com.nrsmac.stormy.weather;
+
+import com.nrsmac.stormy.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,7 +9,7 @@ import java.util.TimeZone;
 /**
  * Created by nrsmac on 2/16/15.
  */
-public class CurrentWeather {
+public class Current {
     private String mIcon;
     private long mTime;
     private double mTemperature;

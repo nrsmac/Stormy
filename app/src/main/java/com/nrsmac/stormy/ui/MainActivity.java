@@ -157,7 +157,7 @@ public class MainActivity extends ActionBarActivity {
     private void updateDisplay() {
         Current current = mForecast.getCurrent();
         mTemperatureLabel.setText(current.getTemperature() + "");
-        mTimeLabel.setText("At " + current.getFormattedTime() + " it will be");
+        mTimeLabel.setText(getString(R.string.time_at) + current.getFormattedTime() + getString(R.string.time_it_will_be));
         mHumidityValue.setText(current.getHumidity() + "");
         mPrecipValue.setText(current.getPrecipChance() + "%");
         mSummaryLabel.setText(current.getSummary());

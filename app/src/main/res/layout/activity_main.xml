@@ -56,7 +56,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="HUMIDITY"
+                android:text="@string/humidity_label"
                 android:id="@+id/humidityLabel" android:textColor="#80ffffff"
                 android:gravity="center_horizontal"/>
             <TextView
@@ -73,7 +73,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="RAIN/SNOW?"
+                android:text="@string/rain_snow_label"
                 android:id="@+id/precipLabel" android:textColor="#80ffffff"
                 android:gravity="center_horizontal"/>
             <TextView
@@ -87,7 +87,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Getting weather data..."
+        android:text="@string/getting_weather_data_label"
         android:id="@+id/summaryLabel"
         android:layout_below="@+id/linearLayout" android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp" android:textColor="@android:color/white"
@@ -115,7 +115,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="HOURLY"
+            android:text="@string/hourlyButton_label"
             android:id="@+id/hourlyButton"
             android:layout_weight="1"
             android:background="#40ffffff"
@@ -124,7 +124,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="7-DAY"
+            android:text="@string/dailyButton_label"
             android:id="@+id/dailyButton"
             android:layout_weight="1"
             android:background="#40ffffff"

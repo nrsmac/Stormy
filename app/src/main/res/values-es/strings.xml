@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Stormy</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="error_message">Había un error. Inténtalo otra vez.</string>
+    <string name="error_ok_button_text">OK</string>
+    <string name="error_title">Había un error.</string>
+    <string name="network_unavailible_message">El red no es disponsible</string>
+    <string name="dailyButton_label">7-DÍAS</string>
+    <string name="hourlyButton_label">HORA POR HORA</string>
+    <string name="getting_weather_data_label">Obteniendo datos meteorológicos...</string>
+    <string name="humidity_label">HUMEDAD</string>
+    <string name="rain_snow_label">LLUVIA/NIEVE?</string>
+    <string name="time_at">"A la(s) "</string>
+    <string name="time_it_will_be">" será"</string>
+</resources>

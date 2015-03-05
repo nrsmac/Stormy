@@ -1,10 +1,12 @@
-package com.nrsmac.stormy;
+package com.nrsmac.stormy.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
+
+import com.nrsmac.stormy.R;
 
 /**
  * Created by nrsmac on 2/15/15.

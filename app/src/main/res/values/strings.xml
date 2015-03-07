@@ -15,5 +15,16 @@
     <string name="humidity_label">HUMIDITY</string>
     <string name="time_it_will_be">" it will be"</string>
     <string name="time_at">"At "</string>
+    <string name="title_activity_daily_forecast">DailyForecastActivity</string>
+    <string name="no_daily_forecast_data">There is no data to display</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="today">Today</string>
+    <string name="title_activity_hourly_forecast">HourlyForecastActivity</string>
 
 </resources>

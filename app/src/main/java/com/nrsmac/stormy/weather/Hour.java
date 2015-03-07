@@ -1,21 +1,28 @@
 package com.nrsmac.stormy.weather;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by nrsmac on 3/4/15.
  */
-public class Hour {
+public class Hour  implements Parcelable{
     private long mTime;
     private String mSummary;
     private double mTemperature;
     private String mIcon;
-    private String mTimeZone;
+    private String mTimezone;
 
-    public String getTimeZone() {
-        return mTimeZone;
+    public Hour() {
+
     }
 
-    public void setTimeZone(String timeZone) {
-        mTimeZone = timeZone;
+    public String getTimezone() {
+        return mTimezone;
+    }
+
+    public void setTimezone(String timezone) {
+        mTimezone = timezone;
     }
 
     public long getTime() {
@@ -49,4 +56,37 @@ public class Hour {
     public void setIcon(String icon) {
         mIcon = icon;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mTime);
+        dest.writeString(mSummary);
+        dest.writeString(mIcon);
+        dest.writeString(mTimezone);
+    }
+
+    private Hour(Parcel in) {
+        mTime = in.readLong();
+        mSummary = in.readString();
+        mIcon = in.readString();
+        mTimezone = in.readString();
+    }
+
+    public static final Creator<Hour> CREATOR = new Creator<Hour>() {
+        @Override
+        public Hour createFromParcel(Parcel source) {
+            return new Hour(source);
+    }
+
+        @Override
+        public Hour[] newArray(int size) {
+            return new Hour[size];
+        }
+    };
+
 }

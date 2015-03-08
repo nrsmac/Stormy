@@ -56,7 +56,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="San José, Costa Rica"
+        android:text="@string/empty_location_label"
         android:id="@+id/locationLabel"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

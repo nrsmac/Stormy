@@ -3,6 +3,11 @@ package com.nrsmac.stormy.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -30,6 +35,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -43,7 +50,9 @@ public class MainActivity extends ActionBarActivity {
     public static final String DAILY_FORECAST = "DAILY_FORECAST";
     public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
 
-    
+    //9.927128 -84.082012 San José, Costa Rica
+    private double mLatitude = 0;
+    private double mLongitude = 0;
 
     private Forecast mForecast;
 
@@ -65,21 +74,100 @@ public class MainActivity extends ActionBarActivity {
 
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        //9.927128 -84.082012
+        final TextView locationLabel = (TextView) findViewById(R.id.locationLabel);
 
-        final double latitude = 9.927128;
-        final double longitude = -84.082012;
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        LocationListener ll = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                if(location != null)
+
+                {
+                    double pLong = location.getLongitude();
+                    double pLat = location.getLatitude();
+
+                    mLongitude = pLong;
+                    mLatitude = pLat;
+                    getForecast(mLatitude, mLongitude);
+                }
+
+
+                String longitude = "Longitude: " + location.getLongitude();
+                Log.v(TAG, longitude);
+                String latitude = "Latitude: " + location.getLatitude();
+                Log.v(TAG, latitude);
+            /*----------to get City-Name from coordinates ------------- */
+                String cityName = null;
+                Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
+                List<Address> addresses;
+                try {
+                    addresses = gcd.getFromLocation(location.getLatitude(),
+                            location.getLongitude(), 1);
+                    if (addresses.size() > 0)
+                        System.out.println(addresses.get(0).getLocality());
+                    cityName = addresses.get(0).getLocality();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String s = longitude + "\n" + latitude + "\n\nMy Currrent City is: "
+                        + cityName;
+                Log.i(TAG, s);
+                locationLabel.setText(cityName);
+
+            }
+
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+
+//took this to line 123 out to test for gps always on bug, using only line 124 right now
+        //exceptions will be thrown if provider is not permitted.
+        // try{gps_enabled=lm.isProviderEnabled(LocationManager.GPS_PROVIDER);}catch(Exception ex){}
+        //try{network_enabled=lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);}catch(Exception ex){}
+
+
+        // if(gps_enabled) {
+        // lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 100, ll);
+        //if(network_enabled)
+        // lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 100, ll);
+
+        // }
+        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 100, ll);
+        // if update broke it, try un-commenting this line, comment out above line?
+        //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 10, ll);
+
+
 
         mRefreshImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getForecast(latitude, longitude);
+                getForecast(mLatitude, mLongitude);
             }
         });
 
-        getForecast(latitude, longitude);
+        getForecast(mLatitude, mLongitude);
 
-
+        mRefreshImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getForecast(mLatitude, mLongitude);
+            }
+        });
 
         Log.d(TAG, "Main UI code is running!");
 

@@ -26,5 +26,6 @@
     <string name="saturday">Saturday</string>
     <string name="today">Today</string>
     <string name="title_activity_hourly_forecast">HourlyForecastActivity</string>
+    <string name="empty_location_label">Getting current city...</string>
 
 </resources>

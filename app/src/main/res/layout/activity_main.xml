@@ -31,7 +31,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="San José, Costa Rica"
+        android:text="@string/empty_location_label"
         android:id="@+id/locationLabel" android:layout_above="@+id/timeLabel"
         android:layout_centerHorizontal="true" android:layout_marginBottom="60dp"
         android:textColor="@android:color/white" android:textSize="24sp"/>

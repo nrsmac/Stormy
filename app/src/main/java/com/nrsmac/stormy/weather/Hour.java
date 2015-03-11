@@ -9,24 +9,14 @@ import java.util.Date;
 /**
  * Created by nrsmac on 3/4/15.
  */
-public class Hour  implements Parcelable{
+public class Hour implements Parcelable {
     private long mTime;
     private String mSummary;
     private double mTemperature;
     private String mIcon;
     private String mTimezone;
 
-    public Hour() {
-
-    }
-
-    public String getTimezone() {
-        return mTimezone;
-    }
-
-    public void setTimezone(String timezone) {
-        mTimezone = timezone;
-    }
+    public Hour() { }
 
     public long getTime() {
         return mTime;
@@ -64,6 +54,14 @@ public class Hour  implements Parcelable{
         mIcon = icon;
     }
 
+    public String getTimezone() {
+        return mTimezone;
+    }
+
+    public void setTimezone(String timezone) {
+        mTimezone = timezone;
+    }
+
     public String getHour() {
         SimpleDateFormat formatter = new SimpleDateFormat("h a");
         Date date = new Date(mTime * 1000);
@@ -72,12 +70,13 @@ public class Hour  implements Parcelable{
 
     @Override
     public int describeContents() {
-        return 0;
+        return 0; // ignore
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(mTime);
+        dest.writeDouble(mTemperature);
         dest.writeString(mSummary);
         dest.writeString(mIcon);
         dest.writeString(mTimezone);
@@ -85,6 +84,7 @@ public class Hour  implements Parcelable{
 
     private Hour(Parcel in) {
         mTime = in.readLong();
+        mTemperature = in.readDouble();
         mSummary = in.readString();
         mIcon = in.readString();
         mTimezone = in.readString();
@@ -94,12 +94,18 @@ public class Hour  implements Parcelable{
         @Override
         public Hour createFromParcel(Parcel source) {
             return new Hour(source);
-    }
+        }
 
         @Override
         public Hour[] newArray(int size) {
             return new Hour[size];
         }
     };
-
 }
+
+
+
+
+
+
+

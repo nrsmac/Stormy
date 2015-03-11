@@ -54,6 +54,8 @@ public class MainActivity extends ActionBarActivity {
     private double mLatitude = 0;
     private double mLongitude = 0;
 
+    public static String cityName = null;
+
     private Forecast mForecast;
 
     @InjectView(R.id.timeLabel) TextView mTimeLabel;
@@ -97,7 +99,6 @@ public class MainActivity extends ActionBarActivity {
                 String latitude = "Latitude: " + location.getLatitude();
                 Log.v(TAG, latitude);
             /*----------to get City-Name from coordinates ------------- */
-                String cityName = null;
                 Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
                 List<Address> addresses;
                 try {
@@ -114,6 +115,7 @@ public class MainActivity extends ActionBarActivity {
                         + cityName;
                 Log.i(TAG, s);
                 locationLabel.setText(cityName);
+
 
             }
 

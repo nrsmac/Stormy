@@ -34,13 +34,13 @@ public class HourAdapter extends RecyclerView.Adapter<HourAdapter.HourViewHolder
     }
 
     @Override
-    public void onBindViewHolder(HourViewHolder holder, int position) {
-        holder.bindHour(mHours[position]);
+    public int getItemCount() {
+        return mHours.length;
     }
 
     @Override
-    public int getItemCount() {
-        return mHours.length;
+    public void onBindViewHolder(HourViewHolder holder, int position) {
+        holder.bindHour(mHours[position]);
     }
 
     public class HourViewHolder extends RecyclerView.ViewHolder

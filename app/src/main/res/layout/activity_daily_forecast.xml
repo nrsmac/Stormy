@@ -17,7 +17,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/thisWeekLabel"
-        android:layout_above="@+id/locationLabel"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:divider="@null"
@@ -41,17 +40,11 @@
         android:layout_centerHorizontal="true"
         android:textColor="#ffffffff"
         android:textSize="30sp"
-        android:layout_marginTop="16dp"/>
+        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="getting location..."
-        android:id="@+id/locationLabel"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ffffffff"
-        android:textSize="18sp"
-        android:layout_marginBottom="10dp"/>
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/recyclerView" />-->
 
 </RelativeLayout>

@@ -2,7 +2,6 @@ package com.nrsmac.stormy.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -63,7 +62,7 @@ public class MainActivity extends ActionBarActivity {
     @InjectView(R.id.humidityValue) TextView mHumidityValue;
     @InjectView(R.id.precipValue) TextView mPrecipValue;
     @InjectView(R.id.summaryLabel) TextView mSummaryLabel;
-    @InjectView(R.id.iconImageView) ImageView mIconImageView;
+    //@InjectView(R.id.iconImageView) ImageView mIconImageView;
     @InjectView(R.id.refreshImageView) ImageView mRefreshImageView;
     @InjectView(R.id.progressBar) ProgressBar mProgressBar;
 
@@ -253,14 +252,14 @@ public class MainActivity extends ActionBarActivity {
 
     private void updateDisplay() {
         Current current = mForecast.getCurrent();
-        mTemperatureLabel.setText(current.getTemperature() + "");
-        mTimeLabel.setText(getString(R.string.time_at) + current.getFormattedTime() + getString(R.string.time_it_will_be));
+        mTemperatureLabel.setText(current.getTemperature() + " degrees");
+        mTimeLabel.setText(current.getFormattedTime());
         mHumidityValue.setText(current.getHumidity() + "");
         mPrecipValue.setText(current.getPrecipChance() + "%");
         mSummaryLabel.setText(current.getSummary());
 
-        Drawable drawable = getResources().getDrawable(current.getIconId());
-        mIconImageView.setImageDrawable(drawable);
+//        Drawable drawable = getResources().getDrawable(current.getIconId());
+//        mIconImageView.setImageDrawable(drawable);
 
     }
 

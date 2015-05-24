@@ -15,9 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.nrsmac.stormy.R;
 import com.nrsmac.stormy.weather.Current;
 import com.nrsmac.stormy.weather.Day;
@@ -42,9 +46,11 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
+
+    public GoogleApiClient mGoogleApiClient;
 
     public static final String DAILY_FORECAST = "DAILY_FORECAST";
     public static final String HOURLY_FORECAST = "HOURLY_FORECAST";
@@ -54,18 +60,38 @@ public class MainActivity extends ActionBarActivity {
     private double mLongitude = 0;
 
     public static String cityName = null;
+    public static int backgroundColor;
 
     private Forecast mForecast;
 
-    @InjectView(R.id.timeLabel) TextView mTimeLabel;
-    @InjectView(R.id.temperatureLabel) TextView mTemperatureLabel;
-    @InjectView(R.id.humidityValue) TextView mHumidityValue;
-    @InjectView(R.id.precipValue) TextView mPrecipValue;
-    @InjectView(R.id.summaryLabel) TextView mSummaryLabel;
-    //@InjectView(R.id.iconImageView) ImageView mIconImageView;
-    @InjectView(R.id.refreshImageView) ImageView mRefreshImageView;
-    @InjectView(R.id.progressBar) ProgressBar mProgressBar;
+    private Location mLastLocation;
 
+    @InjectView(R.id.relativeLayout)
+    RelativeLayout mRelativeLayout;
+    @InjectView(R.id.timeLabel)
+    TextView mTimeLabel;
+    @InjectView(R.id.temperatureLabel)
+    TextView mTemperatureLabel;
+    @InjectView(R.id.humidityValue)
+    TextView mHumidityValue;
+    @InjectView(R.id.precipValue)
+    TextView mPrecipValue;
+    @InjectView(R.id.summaryLabel)
+    TextView mSummaryLabel;
+    //@InjectView(R.id.iconImageView) ImageView mIconImageView;
+    @InjectView(R.id.refreshImageView)
+    ImageView mRefreshImageView;
+    @InjectView(R.id.progressBar)
+    ProgressBar mProgressBar;
+    @InjectView(R.id.locationLabel)
+    TextView mLocationLabel;
+
+    public synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,92 +101,7 @@ public class MainActivity extends ActionBarActivity {
 
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        final TextView locationLabel = (TextView) findViewById(R.id.locationLabel);
-
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        LocationListener ll = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                if(location != null)
-
-                {
-                    double pLong = location.getLongitude();
-                    double pLat = location.getLatitude();
-
-                    mLongitude = pLong;
-                    mLatitude = pLat;
-                    getForecast(mLatitude, mLongitude);
-                }
-
-
-                String longitude = "Longitude: " + location.getLongitude();
-                Log.v(TAG, longitude);
-                String latitude = "Latitude: " + location.getLatitude();
-                Log.v(TAG, latitude);
-            /*----------to get City-Name from coordinates ------------- */
-                Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-                List<Address> addresses;
-                try {
-                    addresses = gcd.getFromLocation(location.getLatitude(),
-                            location.getLongitude(), 1);
-                    if (addresses.size() > 0)
-                        System.out.println(addresses.get(0).getLocality());
-                    cityName = addresses.get(0).getLocality();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                String s = longitude + "\n" + latitude + "\n\nMy Currrent City is: "
-                        + cityName;
-                Log.i(TAG, s);
-                locationLabel.setText(cityName);
-
-
-            }
-
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-
-//took this to line 123 out to test for gps always on bug, using only line 124 right now
-        //exceptions will be thrown if provider is not permitted.
-        // try{gps_enabled=lm.isProviderEnabled(LocationManager.GPS_PROVIDER);}catch(Exception ex){}
-        //try{network_enabled=lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);}catch(Exception ex){}
-
-
-        // if(gps_enabled) {
-        // lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 100, ll);
-        //if(network_enabled)
-        // lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 100, ll);
-
-        // }
-        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 100, ll);
-        // if update broke it, try un-commenting this line, comment out above line?
-        //lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 10, ll);
-
-
-
-        mRefreshImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getForecast(mLatitude, mLongitude);
-            }
-        });
-
+        getLocation();
         getForecast(mLatitude, mLongitude);
 
         mRefreshImageView.setOnClickListener(new View.OnClickListener() {
@@ -171,8 +112,44 @@ public class MainActivity extends ActionBarActivity {
         });
 
         Log.d(TAG, "Main UI code is running!");
+    }
+
+    public void getLocation() {
+        buildGoogleApiClient();
+        mLastLocation = LocationServices.FusedLocationApi
+                .getLastLocation(mGoogleApiClient);
+
+        if (mLastLocation != null) {
+            mLatitude = mLastLocation.getLatitude();
+            mLongitude = mLastLocation.getLongitude();
+        }
+        else {
+            System.out
+                    .println("(Couldn't get the location. Make sure location is enabled on the device)");
+        }
+        Log.i(TAG, mLatitude + ", " + mLongitude + "");
+
+        /*----------to get City-Name from coordinates ------------- */
+        Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = gcd.getFromLocation(mLastLocation.getLatitude(),
+                    mLastLocation.getLongitude(), 1);
+            if (addresses.size() > 0)
+                System.out.println(addresses.get(0).getLocality());
+            cityName = addresses.get(0).getLocality();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String s = mLongitude + "\n" + mLatitude + "\n\nMy Currrent City is: "
+                + cityName;
+        Log.i(TAG, s);
+
 
     }
+
+
 
     private void getForecast(double latitude, double longitude) {
         String apiKey = "7a73984cc278e10ed332f1e5d6db96e9";
@@ -239,6 +216,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void toggleRefresh() {
+        getLocation();
         if (mProgressBar.getVisibility() == View.INVISIBLE) {
             mProgressBar.setVisibility(View.VISIBLE);
             mRefreshImageView.setVisibility(View.INVISIBLE);
@@ -251,15 +229,19 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void updateDisplay() {
+        getLocation();
         Current current = mForecast.getCurrent();
         mTemperatureLabel.setText(current.getTemperature() + " degrees");
         mTimeLabel.setText(current.getFormattedTime());
         mHumidityValue.setText(current.getHumidity() + "");
         mPrecipValue.setText(current.getPrecipChance() + "%");
         mSummaryLabel.setText(current.getSummary());
+        mLocationLabel.setText(cityName);
 
 //        Drawable drawable = getResources().getDrawable(current.getIconId());
 //        mIconImageView.setImageDrawable(drawable);
+        backgroundColor = current.getBackgroundColor();
+        mRelativeLayout.setBackgroundColor(backgroundColor);
 
     }
 
@@ -371,5 +353,21 @@ public class MainActivity extends ActionBarActivity {
         intent.putExtra(HOURLY_FORECAST, mForecast.getHourlyForecast());
         startActivity(intent);
     }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        getLocation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
 
 }

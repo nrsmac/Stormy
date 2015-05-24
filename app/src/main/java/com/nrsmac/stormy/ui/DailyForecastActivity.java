@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,14 +24,15 @@ public class DailyForecastActivity extends ActionBarActivity {
 
     private Day[] mDays;
 
+    @InjectView(R.id.relativeLayout) RelativeLayout mRelativeLayout;
     @InjectView(android.R.id.list) ListView mListView;
     @InjectView(android.R.id.empty) TextView mEmptyTextView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_forecast);
         ButterKnife.inject(this);
+        mRelativeLayout.setBackgroundColor(MainActivity.backgroundColor);
 
         Intent intent = getIntent();
         Parcelable[] parcelables = intent.getParcelableArrayExtra(MainActivity.DAILY_FORECAST);

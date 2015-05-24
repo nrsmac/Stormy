@@ -15,6 +15,7 @@ public class Current {
     private double mPrecipChance;
     private String mSummary;
     private String mTimeZone;
+    private String mBackgroundColor;
 
     public String getTimeZone() {
         return mTimeZone;
@@ -84,5 +85,9 @@ public class Current {
 
     public void setSummary(String summary) {
         mSummary = summary;
+    }
+
+    public int getBackgroundColor() {
+        return Forecast.getBackgroundColor(mIcon);
     }
 }

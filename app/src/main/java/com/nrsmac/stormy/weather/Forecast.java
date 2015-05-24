@@ -1,5 +1,7 @@
 package com.nrsmac.stormy.weather;
 
+import android.graphics.Color;
+
 import com.nrsmac.stormy.R;
 
 /**
@@ -19,6 +21,7 @@ public class Forecast {
         mDailyForecast = dailyForecast;
     }
 
+    
     public Current getCurrent() {
         return mCurrent;
     }
@@ -71,4 +74,48 @@ public class Forecast {
 
         return iconId;
     }
+
+    public static int getBackgroundColor(String colorKey) {
+
+        String mBackgroundColor;
+
+        if (colorKey.equals("clear-day")) {
+            mBackgroundColor = "#FFB300";
+        }
+        else if (colorKey.equals("clear-night")) {
+            mBackgroundColor = "#ff222a36";
+        }
+        else if (colorKey.equals("rain")) {
+            mBackgroundColor = "#3079ab";
+        }
+        else if (colorKey.equals("snow")) {
+            mBackgroundColor = "#b7c0c7";
+        }
+        else if (colorKey.equals("sleet")) {
+            mBackgroundColor = "#888888";
+        }
+        else if (colorKey.equals("wind")) {
+            mBackgroundColor = "#39add1";
+        }
+        else if (colorKey.equals("fog")) {
+            mBackgroundColor = "#C0C0C0";
+        }
+        else if (colorKey.equals("cloudy")) {
+            mBackgroundColor = "#C0C0C0";
+        }
+        else if (colorKey.equals("partly-cloudy-day")) {
+            mBackgroundColor = "#FFB300";
+        }
+        else if (colorKey.equals("partly-cloudy-night")) {
+            mBackgroundColor = "#ff222a36";
+        } else {
+            mBackgroundColor = "#ffffffff";
+        }
+
+        String color = mBackgroundColor;
+        int colorAsInt;
+        colorAsInt = Color.parseColor(color);
+        return colorAsInt;
+    }
+
 }

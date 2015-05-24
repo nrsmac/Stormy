@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nrsmac.stormy.R;
+import com.nrsmac.stormy.ui.MainActivity;
 import com.nrsmac.stormy.weather.Day;
 
 /**
@@ -61,6 +62,7 @@ public class DayAdapter extends BaseAdapter {
 
         holder.iconImageView.setImageResource(day.getIconId());
         holder.temperatureLabel.setText(day.getTemperatureMax() + "");
+        holder.temperatureLabel.setTextColor(MainActivity.backgroundColor);
         
 
         if (position == 0) {

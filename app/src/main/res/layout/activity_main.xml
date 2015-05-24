@@ -142,7 +142,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" android:background="#FF9900" >
+    tools:context=".MainActivity"
+    android:id="@+id/relativeLayout"
+    android:focusableInTouchMode="false"
+    android:background="#FFB300">
 
     <TextView
     android:layout_width="wrap_content"
@@ -166,7 +169,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mostly Void"
+        android:text="Getting Weather..."
         android:id="@+id/summaryLabel"
         android:textSize="60sp" android:textColor="#ffffffff" android:textStyle="bold"
         android:layout_below="@+id/titleLabel" android:layout_alignParentLeft="true"
@@ -182,7 +185,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="San José, Costa Rica"
+        android:text="Getting location..."
         android:id="@+id/locationLabel"
         android:textSize="24sp" android:textColor="#ffffffff" android:textStyle="bold"
         android:layout_below="@+id/inLabel" android:layout_alignLeft="@+id/inLabel"
@@ -190,7 +193,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="75 degrees"
+        android:text="..."
         android:id="@+id/temperatureLabel"
         android:textSize="36sp" android:textColor="#ffffffff" android:textStyle="bold"
         android:layout_marginTop="39dp" android:layout_below="@+id/locationLabel"

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.RelativeLayout;
 
 import com.nrsmac.stormy.R;
 import com.nrsmac.stormy.adapters.HourAdapter;
@@ -21,6 +22,7 @@ public class HourlyForecastActivity extends ActionBarActivity {
 
     private Hour[] mHours;
 
+    @InjectView(R.id.relativeLayout) RelativeLayout mRelativeLayout;
     @InjectView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     @Override
@@ -28,6 +30,7 @@ public class HourlyForecastActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hourly_forecast);
         ButterKnife.inject(this);
+        mRelativeLayout.setBackgroundColor(MainActivity.backgroundColor);
 
         Intent intent = getIntent();
         Parcelable[] parcelables = intent.getParcelableArrayExtra(MainActivity.HOURLY_FORECAST);
